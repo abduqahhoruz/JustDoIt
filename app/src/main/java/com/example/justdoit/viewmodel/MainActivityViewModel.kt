@@ -1,4 +1,4 @@
-package com.example.justdoit
+package com.example.justdoit.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -47,7 +47,7 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
 
     }
 
-    fun getAll() {
+    fun getAllNote() {
         GlobalScope.launch {
             val newData = noteDao.getAll()
             GlobalScope.launch(Dispatchers.Main) {
