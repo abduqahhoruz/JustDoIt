@@ -21,7 +21,7 @@ class MainActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         adapter = NoteAdapter()
         recycler.adapter = adapter
-        
+
         subscribe()
         getAllNote()
 
