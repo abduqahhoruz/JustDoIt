@@ -8,8 +8,10 @@ import androidx.room.PrimaryKey
 data class Note(
     @PrimaryKey
     val id: Long,
+
     @ColumnInfo(name = "title")
     val title:String,
+
     @ColumnInfo(name = "description")
     val description: String
 )

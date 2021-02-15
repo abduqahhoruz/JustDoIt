@@ -13,7 +13,6 @@ class MainActivityViewModel(application: Application) : AndroidViewModel(applica
     val mainModel = MutableLiveData<List<Note>>()
     val noteDao = AppDB.getInstance(application).notesDao()
 
-
     fun addNote(note: Note) {
         GlobalScope.launch {
             noteDao.insertNote(note)
