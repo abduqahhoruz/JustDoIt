@@ -1,12 +1,10 @@
 package com.example.justdoit.db
 
 import androidx.room.*
-import com.example.justdoit.db.Note
 
 
 @Dao
 interface NoteDao {
-
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertNote(note: Note)
@@ -15,8 +13,11 @@ interface NoteDao {
     suspend fun update(note: Note)
 
     @Query("SELECT * FROM note")
-    suspend fun getAll():List<Note>
+    suspend fun getAll(): List<Note>
 
     @Delete
     suspend fun delete(note: Note)
+
+    @Query("SELECT * FROM note ORDER BY id DESC")
+    suspend fun order(): List<Note>
 }

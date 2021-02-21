@@ -10,7 +10,7 @@ data class Note(
     val id: Long,
 
     @ColumnInfo(name = "title")
-    val title:String,
+    val title: String,
 
     @ColumnInfo(name = "description")
     val description: String

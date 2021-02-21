@@ -1,8 +1,8 @@
 package com.example.justdoit
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.justdoit.adapter.NoteAdapter
 import com.example.justdoit.db.Note
@@ -14,25 +14,49 @@ lateinit var adapter: NoteAdapter
 
 class MainActivity : AppCompatActivity() {
 
-
+     private var note: Note? = null
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
-        adapter = NoteAdapter()
+
+        adapter = NoteAdapter {
+            note = it
+            btn.text = "EDIT"
+            editTitle.setText(it.title)
+            editDesc.setText(it.description)
+        }
         recycler.adapter = adapter
 
         subscribe()
         getAllNote()
 
-        btn.setOnClickListener{
-             addNote(
-                 editTitle.text.toString(),
-                 editDesc.text.toString()
-             )
+        btn.setOnClickListener {
+            if (btn.text == "EDIT") {
+                val newNote = note?.copy(title = editTitle.text.toString(), description = editDesc.text.toString())
+                updateNote(newNote!!)
+                editTitle.setText("")
+                editDesc.setText("")
+                btn.text = "Add"
+            }
+            else
+                addNote(
+                    editTitle.text.toString(),
+                    editDesc.text.toString()
+                )
             editTitle.setText("")
             editDesc.setText("")
+
         }
+        btnClear.setOnClickListener{
+            editTitle.setText("")
+            editDesc.setText("")
+            btn.text = "Add"
+        }
+         btnSort.setOnClickListener{
+             viewModel.sortNote()
+         }
     }
 
     private fun subscribe() {
@@ -42,7 +66,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun addNote(title: String, desc: String) {
-        val note  = Note(System.currentTimeMillis(),title,desc)
+        val note = Note(System.currentTimeMillis(), title, desc)
         viewModel.addNote(note)
     }
 
@@ -50,11 +74,11 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    fun updateNote(note: Note) {
-viewModel.updateNote(note)
+    private fun updateNote(note: Note) {
+        viewModel.updateNote(note)
     }
 
-    fun getAllNote() {
+    private fun getAllNote() {
         viewModel.getAllNote()
     }
 }
